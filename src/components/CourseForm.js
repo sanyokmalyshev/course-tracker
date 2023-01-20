@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Tags from './Tags';
+import { baseUrl } from '../api/url';
 
 export default function CourseForm({ courseAdded }) {
     const [name, setName] = useState('');
@@ -15,10 +16,18 @@ export default function CourseForm({ courseAdded }) {
 
     const submitCourse = async (e) => {
         e.preventDefault();
+        const data = {
+            fields: {
+                name,
+                link,
+                tags,
+            },
+            typecast: true
+        }
         try {
-            await fetch('/.netlify/functions/courses', {
+            await fetch(baseUrl, {
                 method: 'POST',
-                body: JSON.stringify({ name, link, tags }),
+                body: JSON.stringify(data),
             });
             resetForm();
             courseAdded();

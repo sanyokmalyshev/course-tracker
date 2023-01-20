@@ -3,6 +3,7 @@ const formattedReturn = require('./formattedReturn');
 
 module.exports = async (event) => {
     try {
+        console.log(table);
         const courses = await table.select().firstPage();
         const formattedCourses = courses.map((course) => ({
             id: course.id,

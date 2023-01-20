@@ -1,11 +1,19 @@
 import React from 'react'
+import { baseUrl } from '../api/url';
 
-const Course = ({ course, refreshCourses }) => {
+const Course = ({ course, refreshCourses, id }) => {
     const markCoursePurchased = async () => {
+        const data = {
+            fields: {
+                ...course,
+                purchased: true
+            },
+            typecast: true
+        };
         try {
-            await fetch('/.netlify/functions/courses', {
+            await fetch(`${baseUrl}/${id}`, {
                 method: 'PUT',
-                body: JSON.stringify({ ...course, purchased: true }),
+                body: JSON.stringify(data),
             });
             refreshCourses();
         } catch (err) {
@@ -15,9 +23,8 @@ const Course = ({ course, refreshCourses }) => {
 
     const deleteCourse = async () => {
         try {
-            await fetch('/.netlify/functions/courses', {
+            await fetch(`${baseUrl}/${id}`, {
                 method: 'DELETE',
-                body: JSON.stringify({ id: course.id }),
             });
             refreshCourses();
         } catch (err) {
